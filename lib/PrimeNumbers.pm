@@ -1,20 +1,7 @@
 package PrimeNumbers;
-use v5.40;
-use utf8;
-use experimental 'class';
 
-use Exporter 'import';
-use Result::Simple;
-use Types::Standard -types;
-use Syntax::Keyword::Assert;
-
-class PrimeNumbers::Error::InvalidInput :isa(PrimeNumbers::Error) {}
-
-use kura PrimeLimit => Int & sub { $_ > 0 };
-use kura PrimeList => ArrayRef[Int];
-use kura InvalidInputError => InstanceOf['PrimeNumbers::Error::InvalidInput'];
-
-our @EXPORT_OK = qw(find_primes);
+=pod
+=encoding utf-8
 
 =head1 NAME
 
@@ -40,60 +27,45 @@ PrimeNumbers - 指定された整数以下の全ての素数を発見するモ�
 
 =head1 FUNCTIONS
 
-=head2 find_primes($limit)
+=cut
 
-指定された整数以下の全ての素数を見つける関数です。
+use v5.40;
+use utf8;
+use experimental 'class';
 
-B<引数:>
+use Exporter 'import';
+use Result::Simple;
+use Types::Standard -types;
+use Syntax::Keyword::Assert;
 
-=over 4
+class PrimeNumbers::Error::InvalidInput :isa(PrimeNumbers::Error) {}
 
-=item $limit - 素数を探す上限値（1以上の整数）
+use kura PrimeLimit => Int & sub { $_ > 0 };
+use kura PrimeList => ArrayRef[Int];
+use kura InvalidInputError => InstanceOf['PrimeNumbers::Error::InvalidInput'];
 
-=back
+our @EXPORT_OK = qw(find_primes);
 
-B<戻り値:>
+=pod
 
-Result::Simpleを使用した結果オブジェクト。
+=head2 find_primes($limit) -> Result(PrimeList, InvalidInputError)
 
-成功時: Ok(ArrayRef[Int]) - 素数のリスト
-失敗時: Err(PrimeNumbers::Error::InvalidInput) - エラーオブジェクト
+指定された整数以下の全ての素数を返す
 
-B<エラー:>
+    my ($primes, $err) = find_primes(20);
+    # $primes = [2, 3, 5, 7, 11, 13, 17, 19]
 
-=over 4
-
-=item * C<PrimeNumbers::Error::InvalidInput> - 入力値が1以上の整数でない場合
-
-=back
-
-B<例:>
-
-  my ($primes, $err) = find_primes(20);
-  # $primes = [2, 3, 5, 7, 11, 13, 17, 19]
-
-=head1 ALGORITHM
+    @params $limit PositiveInt - 素数を探す上限値（1以上の整数）
+    @return
+        * Ok(PrimeList) - 素数のリスト
+        * Err(InvalidInputError) - 入力値が1以上の整数でないエラー
 
 エラトステネスのふるいアルゴリズムを使用しています。
-アルゴリズムの概要:
 
-1. 2からnまでの整数のリストを作成
-2. 最小の未処理の数を素数とマーク
-3. その素数の倍数を全て除外
-4. 未処理の数が残っていれば2に戻る
-
-=head1 PERFORMANCE
-
-このアルゴリズムの計算量は O(n log log n) です。
-メモリ使用量は O(n) です。
-
-=head1 AUTHOR
-
-開発者
-
-=head1 LICENSE
-
-指定なし
+    1. 2からnまでの整数のリストを作成
+    2. 最小の未処理の数を素数とマーク
+    3. その素数の倍数を全て除外
+    4. 未処理の数が残っていれば2に戻る
 
 =cut
 
