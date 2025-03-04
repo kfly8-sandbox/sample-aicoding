@@ -1,6 +1,7 @@
 package PrimeNumbers;
 use v5.40;
 use utf8;
+use experimental 'class';
 
 # NAME
 #
@@ -29,22 +30,25 @@ use Result::Simple;
 use Types::Standard -types;
 use Syntax::Keyword::Assert;
 
+class PrimeNumbers::Error::InvalidInput :isa(PrimeNumbers::Error) {}
+
 use kura PrimeLimit => Int & sub { $_ > 0 };
 use kura PrimeList => ArrayRef[Int];
 use kura InvalidInputError => InstanceOf['PrimeNumbers::Error::InvalidInput'];
-
-require PrimeNumbers::Error;
 
 our @EXPORT_OK = qw(find_primes);
 
 # 指定された整数以下の全ての素数を見つける関数
 # エラトステネスのふるいアルゴリズムを使用
 sub find_primes :Result(PrimeList, InvalidInputError) ($limit) {
+
     # 入力の検証
     if (!defined $limit || !PrimeLimit->check($limit)) {
-        return Err(PrimeNumbers::Error::InvalidInput->new(
-            message => '入力は1以上の整数である必要があります'
-        ));
+        return Err(
+            PrimeNumbers::Error::InvalidInput->new(
+                message => '入力は1以上の整数である必要があります'
+            )
+        );
     }
 
     # 1以下の場合は空のリストを返す

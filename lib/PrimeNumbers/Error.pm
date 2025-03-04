@@ -7,5 +7,3 @@ class PrimeNumbers::Error {
     field $message :param :reader;
 }
 
-class PrimeNumbers::Error::InvalidInput :isa(PrimeNumbers::Error) {
-}
