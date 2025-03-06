@@ -1,4 +1,7 @@
 severity = 3
+verbose = %l: %m (%p)\n
+
+severity = 3
 program-extensions = .pl .t
 verbose = %f: %m at line %l, column %c.  %e [%p]\n
 
@@ -23,6 +26,9 @@ equivalent_modules = v5.40
 # isa operatorの利用は許可
 [-BuiltinFunctions::ProhibitUniversalIsa]
 
+# subroutine signaturesで誤検知するのでoff
+[-Subroutines::ProhibitSubroutinePrototypes]
+
 # Following My Coding Standard
 # ----------------------------
 
@@ -31,3 +37,23 @@ equivalent_modules = v5.40
 
 # /x modifierがなくても良い
 [-RegularExpressions::RequireExtendedFormatting]
+
+# 1ファイルに複数のパッケージ宣言があっても良い
+[-Modules::ProhibitMultiplePackages]
+
+# no warnings で抑制する場面はOSSだとよくあるのでoff
+[-TestingAndDebugging::ProhibitNoWarnings]
+
+# map でごにょごにょしたい
+[-BuiltinFunctions::ProhibitComplexMappings]
+
+# Carp でなくても良い時はある
+[-ErrorHandling::RequireCarping]
+
+# @EXPORT は利用しないて済むならその方が良いけれど、defaultがあることもある
+[-Modules::ProhibitAutomaticExportation]
+
+# requireがなくても良いだろう
+[-Subroutines::RequireFinalReturn]
+
+
