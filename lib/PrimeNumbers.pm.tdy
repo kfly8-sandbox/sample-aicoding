@@ -155,25 +155,26 @@ sub find_primes :Result(PrimeList, InvalidInputError) ($limit) {
 =cut
 
 sub is_prime :Result(Bool, InvalidInputError) ($n) {
+
     # 入力が自然数であることを確認（自然数以外は想定外）
     assert(defined $n);
     assert(NaturalNumber->check($n));
-    
+
     # 1は素数ではない
     if ($n == 1) {
         return Ok(0);
     }
-    
+
     # 2は素数
     if ($n == 2) {
         return Ok(1);
     }
-    
+
     # 2で割り切れるなら素数ではない
     if ($n % 2 == 0) {
         return Ok(0);
     }
-    
+
     # 3以上の奇数の約数をチェック（3から平方根まで、奇数のみ）
     my $limit = int(sqrt($n));
     for (my $i = 3; $i <= $limit; $i += 2) {
@@ -181,7 +182,7 @@ sub is_prime :Result(Bool, InvalidInputError) ($n) {
             return Ok(0); # 割り切れるので素数ではない
         }
     }
-    
+
     # どの数でも割り切れなかったので素数
     return Ok(1);
 }
